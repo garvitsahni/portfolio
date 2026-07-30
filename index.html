@@ -1391,53 +1391,14 @@ if (typeof window.Lenis !== 'undefined') {
     });
   }
 
-  const PRELOADER_TIMEOUT_MS = 8000;
-  let preloaderDone = false;
-
-  const dismissPreloader = () => {
-    if (preloaderDone) return;
-    preloaderDone = true;
-    if (preloader) {
-      preloader.style.transition = 'opacity 0.6s ease';
-      preloader.style.opacity = '0';
-      setTimeout(() => {
-        preloader.style.display = 'none';
-        document.body.classList.remove('is-loading');
-        playHeroIntro();
-      }, 600);
-    } else {
-      document.body.classList.remove('is-loading');
-      playHeroIntro();
-    }
-  };
-
-  const preloaderTimer = setTimeout(dismissPreloader, PRELOADER_TIMEOUT_MS);
-
   async function init(){
     resizeCanvas();
     await loadFrames();
-    clearTimeout(preloaderTimer);
     framesReady = true;
     drawFrame(0);
-
-    if (preloaderDone) return;
-
-    if (hasGSAP) {
-      try {
-        gsap.to(preloader, {
-          opacity: 0, duration: 0.8, delay: 0.3, ease: 'power3.out',
-          onComplete: () => {
-            if (preloader) preloader.style.display = 'none';
-            document.body.classList.remove('is-loading');
-            playHeroIntro();
-          }
-        });
-      } catch (e) {
-        dismissPreloader();
-      }
-    } else {
-      dismissPreloader();
-    }
+    if (preloader) preloader.style.display = 'none';
+    document.body.classList.remove('is-loading');
+    playHeroIntro();
     onScroll();
   }
 
