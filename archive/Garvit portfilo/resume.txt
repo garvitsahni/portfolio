@@ -1,0 +1,44 @@
+Garvit Sahni
+Gurugram, India  •  +91-8860428813  •  garvitsahni0012@gmail.com  •  github.com/garvitsahni  •  linkedin.com/in/garvit-sahni
+SUMMARY
+First-year B.Tech student in Computer Science (AI & ML) with hands-on experience building AI-powered systems during an internship at DRDO. Passionate about full-stack development, natural language processing, and applying machine learning to real-world problems. Actively seeking opportunities to contribute to impactful projects.
+TECHNICAL SKILLS
+Languages: Python, Java, C, C++, JavaScript, R
+Web & Backend: Node.js, HTML, CSS, REST APIs, Express.js
+AI / ML: NLP, Chatbot Development, Fraud Detection, Supervised Learning
+Core CS: Data Structures & Algorithms, DBMS, Object-Oriented Programming
+Tools: Git, GitHub, VS Code, Postman
+EXPERIENCE
+Software Development Intern  |  CFEES, DRDO — Ministry of Defence, Govt. of India  Jan 2025 – Apr 2025
+Designed and developed an AI-based complaint management chatbot using Node.js, capable of handling structured multi-step workflows for complaint registration, routing, and resolution tracking.
+Implemented automated unique complaint ID generation and department-wise categorisation, reducing manual processing effort by an estimated 60%.
+Integrated NLP-based intent recognition to classify complaint types and trigger appropriate workflows, improving response accuracy and handling 100+ test cases across departments.
+Collaborated with CFEES personnel to map real-world complaint flows into the system, delivering a working prototype within the internship timeline.
+PROJECTS
+AI Complaint Chatbot  —  Node.js, NLP, REST API
+Built a full-stack chatbot system in Node.js with a 3-stage workflow engine: complaint intake, classification, and status tracking.
+Implemented rule-based and NLP-driven classification to auto-route complaints to the correct department, achieving ~85% routing accuracy in testing.
+Designed a RESTful API backend with auto-generated complaint IDs and persistent state management; successfully handled 100+ simulated complaint flows.
+Medix — Healthcare Assistance Platform  —  Node.js, HTML/CSS, JavaScript
+Developed a web-based healthcare platform aimed at improving accessibility for patients seeking medical guidance and appointment information.
+Implemented a symptom-input interface that suggests relevant medical departments and nearby resources, reducing user navigation steps by ~40%.
+Designed a clean, responsive UI optimised for non-technical users across mobile and desktop devices.
+Email Summariser with Fraud Detection  —  Python, NLP, Scikit-learn
+Built an NLP pipeline in Python to automatically summarise long-form emails into 2–3 sentence digests, cutting average reading time by ~70%.
+Trained a supervised classification model to flag potentially fraudulent or phishing emails, achieving 88% accuracy on a 500-email test dataset.
+Integrated both features into a unified preprocessing pipeline with tokenisation, stopword removal, and TF-IDF feature extraction.
+QR Equipment Scanner  —  Python, Node.js, QR API
+Built a QR code–based asset tracking system for equipment monitoring, enabling instant scan-to-record logging without manual data entry.
+Reduced equipment lookup time by ~50% compared to manual registry; designed for use in lab or inventory environments with 50+ assets.
+Zyhar — Smart Solution Platform  —  Node.js, JavaScript
+Designed and built a scalable platform architecture targeting real-world operational problems, with modular components allowing feature extension.
+Implemented core backend logic for data intake and processing, supporting multiple simultaneous user workflows.
+EDUCATION
+B.Tech in Computer Science Engineering (AI & ML)  |  Dronacharya College of Engineering, Gurugram  2024 – Present
+Relevant coursework: Data Structures & Algorithms, Database Management Systems, Machine Learning, Object-Oriented Programming
+Class XII — CBSE (Science)  |  DPSG Palam Vihar, Gurugram  2024
+Class X — CBSE  |  DPSG Palam Vihar, Gurugram  2022
+ACHIEVEMENTS & EXTRACURRICULARS
+Competed in NexHack (national-level hackathon) — built a working prototype addressing urban logistics, shortlisted among top teams.
+Participated in Hack O' Rally (national hackathon) — developed a real-time data aggregation tool within a 24-hour sprint.
+Active open-source contributor on GitHub with multiple project repositories demonstrating full-stack and AI development work.
