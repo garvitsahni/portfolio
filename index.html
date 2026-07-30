@@ -1396,9 +1396,11 @@ if (typeof window.Lenis !== 'undefined') {
     await loadFrames();
     framesReady = true;
     drawFrame(0);
-    if (preloader) preloader.style.display = 'none';
-    document.body.classList.remove('is-loading');
-    playHeroIntro();
+    requestAnimationFrame(() => {
+      if (preloader) preloader.style.display = 'none';
+      document.body.classList.remove('is-loading');
+      playHeroIntro();
+    });
     onScroll();
   }
 
