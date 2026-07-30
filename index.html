@@ -1296,25 +1296,20 @@ if (typeof window.Lenis !== 'undefined') {
   let currentFrame = 0;
   let targetFrame = 0;
   let animating = false;
-  let framesReady = false;
 
-  function resizeCanvas(){
-    if (!canvas || !ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawFrame(Math.round(currentFrame));
-  }
-  window.addEventListener('resize', resizeCanvas);
-
-  function frameSrc(i){
-    return FRAME_PATH + 'frame_' + String(i).padStart(5, '0') + '.png';
+  function nearestLoaded(index){
+    for (let d = 0; d < TOTAL_FRAMES; d++){
+      if (images[index + d]) return index + d;
+      if (images[index - d]) return index - d;
+    }
+    return -1;
   }
 
   function drawFrame(index){
-    const img = images[index];
-    if (!img || !canvas || !ctx) return;
+    if (!canvas || !ctx) return;
+    const idx = images[index] ? index : nearestLoaded(index);
+    const img = idx >= 0 ? images[idx] : null;
+    if (!img) return;
     const cw = window.innerWidth;
     const ch = window.innerHeight;
     const iw = img.naturalWidth;
@@ -1348,7 +1343,6 @@ if (typeof window.Lenis !== 'undefined') {
   }
 
   function onScroll(){
-    if (!framesReady) return;
     const scrollTop = window.scrollY;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const scrollFraction = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
@@ -1356,52 +1350,25 @@ if (typeof window.Lenis !== 'undefined') {
     if (progressBar) progressBar.style.width = (scrollFraction * 100) + '%';
     startAnimate();
   }
-  
+
   if (lenis) {
     lenis.on('scroll', onScroll);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  function loadFrames(){
-    return new Promise((resolve) => {
-      const BATCH = 20;
-      let nextIndex = 0;
-      function loadBatch(){
-        const end = Math.min(nextIndex + BATCH, TOTAL_FRAMES);
-        for (let i = nextIndex; i < end; i++){
-          const img = new Image();
-          img.src = frameSrc(i);
-          img.onload = () => {
-            images[i] = img;
-            loadedCount++;
-            const pct = Math.round((loadedCount / TOTAL_FRAMES) * 100);
-            if (preloaderFill) preloaderFill.style.width = pct + '%';
-            if (preloaderPct) preloaderPct.textContent = 'Loading frames… ' + pct + '%';
-            if (loadedCount === TOTAL_FRAMES) resolve();
-          };
-          img.onerror = () => {
-            loadedCount++;
-            if (loadedCount === TOTAL_FRAMES) resolve();
-          };
-        }
-        nextIndex = end;
-        if (nextIndex < TOTAL_FRAMES) requestAnimationFrame(loadBatch);
-      }
-      loadBatch();
-    });
-  }
-
-  const PRELOADER_TIMEOUT_MS = 8000;
-  let preloaderDone = false;
-
-  const dismissPreloader = () => {
-    if (preloaderDone) return;
-    preloaderDone = true;
+  function showFrame0(){
+    if (canvas && ctx) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    drawFrame(0);
     if (preloader) {
       preloader.style.transition = 'opacity 0.6s ease';
       preloader.style.opacity = '0';
       setTimeout(() => {
-        preloader.style.display = 'none';
+        if (preloader) preloader.style.display = 'none';
         document.body.classList.remove('is-loading');
         playHeroIntro();
       }, 600);
@@ -1409,39 +1376,33 @@ if (typeof window.Lenis !== 'undefined') {
       document.body.classList.remove('is-loading');
       playHeroIntro();
     }
-  };
-
-  const preloaderTimer = setTimeout(dismissPreloader, PRELOADER_TIMEOUT_MS);
-
-  async function init(){
-    resizeCanvas();
-    await loadFrames();
-    clearTimeout(preloaderTimer);
-    framesReady = true;
-    drawFrame(0);
-
-    if (preloaderDone) return;
-
-    if (hasGSAP) {
-      try {
-        gsap.to(preloader, {
-          opacity: 0, duration: 0.8, delay: 0.3, ease: 'power3.out',
-          onComplete: () => {
-            if (preloader) preloader.style.display = 'none';
-            document.body.classList.remove('is-loading');
-            playHeroIntro();
-          }
-        });
-      } catch (e) {
-        dismissPreloader();
-      }
-    } else {
-      dismissPreloader();
-    }
-    onScroll();
   }
 
-  init();
+  function loadFrames(){
+    const BATCH = 20;
+    let nextIndex = 0;
+    function loadBatch(){
+      const end = Math.min(nextIndex + BATCH, TOTAL_FRAMES);
+      for (let i = nextIndex; i < end; i++){
+        const img = new Image();
+        img.src = FRAME_PATH + 'frame_' + String(i).padStart(5, '0') + '.png';
+        img.onload = () => {
+          images[i] = img;
+          loadedCount++;
+          const pct = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+          if (preloaderFill) preloaderFill.style.width = pct + '%';
+          if (preloaderPct) preloaderPct.textContent = 'Loading frames… ' + pct + '%';
+        };
+        img.onerror = () => { loadedCount++; };
+      }
+      nextIndex = end;
+      if (nextIndex < TOTAL_FRAMES) requestAnimationFrame(loadBatch);
+    }
+    loadBatch();
+  }
+
+  loadFrames();
+  setTimeout(showFrame0, 100);
 })();
 
 /* ==========================================================
